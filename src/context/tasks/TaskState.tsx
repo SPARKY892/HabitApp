@@ -13,7 +13,7 @@ const TaskState = ({ children }) => {
   };
 
   // Set up the reducer
-  const [state, dispatch] = useReducer(TaskReducer, initialState.taskItems);
+  const [state, dispatch] = useReducer(TaskReducer, initialState);
 
   // Function to handle when a task is added
   const addTask = (payload) => {
