@@ -19,14 +19,15 @@ const TaskAddScreen = ({ navigation }) => {
       completed: false,
     };
 
-    // Assuming your context provides a method like setFormData
+    console.log(combinedData);
+
     addTask(combinedData);
   };
 
   return (
     <View>
       <TitleInput
-        placeholder="Goal Title"
+        placeholder="Task Title"
         onChangeText={(newText) => setTitleText(newText)}
         defaultValue={titleText}
       />
@@ -46,14 +47,6 @@ const TitleInput = styled.TextInput`
   color: ${Theme.headerTextColour};
   padding: 5px 5px;
   margin: 10px 20px;
-  border-radius: 10px;
-  background-color: #eee;
-`;
-
-const DescriptionInput = styled.TextInput`
-  color: ${Theme.headerTextColour};
-  padding: 5px 5px;
-  margin: 0px 20px 10px;
   border-radius: 10px;
   background-color: #eee;
 `;
