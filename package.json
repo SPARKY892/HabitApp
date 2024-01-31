@@ -9,13 +9,64 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "expo": "~49.0.13",
+    "@expo/vector-icons": "^13.0.0",
+    "@gorhom/bottom-sheet": "^4.4.5",
+    "@miblanchard/react-native-slider": "^2.1.0",
+    "@react-native-async-storage/async-storage": "^1.21.0",
+    "@react-native-picker/picker": "^2.5.1",
+    "@react-navigation/bottom-tabs": "^6.5.0",
+    "@react-navigation/native": "^6.1.0",
+    "@react-navigation/native-stack": "^6.9.12",
+    "color": "^4.2.3",
+    "expo": "^49.0.13",
+    "expo-constants": "^14.4.2",
+    "expo-navigation-bar": "~2.3.0",
     "expo-status-bar": "~1.6.0",
+    "expo-updates": "~0.18.17",
+    "graphql": "^15.8.0",
+    "lottie-react-native": "5.1.6",
+    "node": "^21.1.0",
     "react": "18.2.0",
-    "react-native": "0.72.5"
+    "react-native": "0.72.6",
+    "react-native-bouncy-checkbox": "^3.0.7",
+    "react-native-calendars": "^1.1302.0",
+    "react-native-gesture-handler": "~2.12.0",
+    "react-native-reanimated": "~3.3.0",
+    "react-native-safe-area-context": "4.6.3",
+    "react-native-screens": "~3.22.0",
+    "react-native-uuid": "^2.0.1",
+    "styled-components": "^6.0.8",
+    "styled-theming": "^2.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.5",
+    "@graphql-eslint/eslint-plugin": "^3.13.1",
+    "@types/react": "^18.0.26",
+    "@types/react-native": "^0.69.16",
+    "@types/styled-components": "^5.1.26",
+    "@types/styled-components-react-native": "^5.2.0",
+    "@typescript-eslint/eslint-plugin": "^5.46.0",
+    "@typescript-eslint/parser": "^5.46.0",
+    "babel-plugin-import-graphql": "^2.8.1",
+    "babel-plugin-module-resolver": "^5.0.0",
+    "eslint": "^8.29.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.2",
+    "lint-staged": "^13.1.0",
+    "prettier": "^2.8.1",
+    "typescript": "^5.1.3"
   },
-  "private": true
+  "private": true,
+  "lint-staged": {
+    "*.{ts,tsx}": "eslint"
+  },
+  "overrides": {
+    "semver": "^7.5.3"
+  }
 }
