@@ -36,7 +36,8 @@
     "react-native-screens": "~3.22.0",
     "react-native-uuid": "^2.0.1",
     "styled-components": "^6.0.8",
-    "styled-theming": "^2.2.0"
+    "styled-theming": "^2.2.0",
+    "zustand": "^4.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",
