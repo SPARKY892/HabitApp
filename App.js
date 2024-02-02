@@ -10,9 +10,7 @@ const App = () => {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
         <CurrentThemeProvider>
-          <GoalState>
-            <AppNavigator />
-          </GoalState>
+          <AppNavigator />
         </CurrentThemeProvider>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
