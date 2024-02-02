@@ -2,11 +2,13 @@ import { Button, View } from "react-native";
 import React, { useContext, useState } from "react";
 import styled from "styled-components/native";
 import { Theme } from "@library/styles";
-import TaskContext from "@context/tasks/TaskContext";
+import useTaskStore from "@context/tasks/TaskState";
 
 const TaskEditScreen = ({ navigation, route }) => {
   const { id } = route.params;
-  const { taskItems, editTask, removeTask } = useContext(TaskContext);
+  const taskItems = useTaskStore((state) => state.taskItems);
+  const editTask = useTaskStore((state) => state.editTask);
+  const removeTask = useTaskStore((state) => state.removeTask);
   const task = taskItems.find((item) => item.id === id);
   const [titleText, setTitleText] = useState(task.title);
 
@@ -16,6 +18,8 @@ const TaskEditScreen = ({ navigation, route }) => {
       id,
       title: titleText,
     };
+
+    // console.log(combinedData);
     editTask(combinedData);
   };
 

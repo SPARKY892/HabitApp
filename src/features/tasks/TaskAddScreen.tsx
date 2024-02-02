@@ -1,12 +1,13 @@
 import { View, Button } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import uuid from "react-native-uuid";
 import styled from "styled-components/native";
 import { Theme } from "@library/styles";
-import TaskContext from "@context/tasks/TaskContext";
+import useTaskStore from "@context/tasks/TaskState";
 
 const TaskAddScreen = ({ navigation }) => {
-  const { addTask } = useContext(TaskContext);
+  const addTask = useTaskStore((state) => state.addTask);
+  const taskItems = useTaskStore((state) => state.taskItems);
   const [titleText, setTitleText] = useState(null);
 
   // Function to handle saving to context
@@ -18,6 +19,10 @@ const TaskAddScreen = ({ navigation }) => {
       title: titleText,
       completed: false,
     };
+
+    while (taskItems.some((task) => task.id === combinedData.id)) {
+      combinedData.id = uuid.v4();
+    }
 
     console.log(combinedData);
 

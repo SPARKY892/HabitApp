@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components/native";
 import { View } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import TaskContext from "@context/tasks/TaskContext";
+import useTaskStore from "@context/tasks/TaskState";
 
 const TaskInfoBox = ({ item }) => {
+  const toggleCompletion = useTaskStore((state) => state.toggleCompletion);
   const { id, title, completed } = item;
-  const { toggleCompletion } = useContext(TaskContext);
 
   return (
     <Container>
