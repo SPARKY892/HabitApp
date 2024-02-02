@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/prefer-default-export
-export const calcPeriods = (goals) => {
+const calcPeriods = (goals) => {
   // console.log(goals[0]);
   const updatedGoals = goals.map((goal) => {
     const { completions } = goal;
@@ -52,3 +51,5 @@ export const calcPeriods = (goals) => {
   console.log(`updatedGoals: ${JSON.stringify(updatedGoals)}`);
   return updatedGoals;
 };
+
+export default calcPeriods;
