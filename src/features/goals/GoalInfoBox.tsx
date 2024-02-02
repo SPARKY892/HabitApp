@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import styled from "styled-components/native";
 import { View } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import GoalContext from "@context/goals/GoalContext";
+import useGoalStore from "@context/goals/GoalState";
 
 const GoalInfoBox = ({ goal }) => {
-  const { toggleCompletion } = useContext(GoalContext);
+  const toggleCompletion = useGoalStore((state) => state.toggleCompletion);
   const { id, title, description, completions, targetDays } = goal;
   const today = new Date().toJSON().slice(0, 10);
 

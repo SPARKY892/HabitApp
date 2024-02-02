@@ -1,14 +1,16 @@
 import { Button, View, Text } from "react-native";
-import React, { useContext, useState } from "react";
-import GoalContext from "@context/goals/GoalContext";
+import React, { useState } from "react";
 import styled from "styled-components/native";
 import { Theme } from "@library/styles";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Picker } from "@react-native-picker/picker";
+import useGoalStore from "@context/goals/GoalState";
 
 const GoalEditScreen = ({ navigation, route }) => {
   const { id } = route.params;
-  const { goalItems, editGoal, removeGoal } = useContext(GoalContext);
+  const goalItems = useGoalStore((state) => state.goalItems);
+  const editGoal = useGoalStore((state) => state.editGoal);
+  const removeGoal = useGoalStore((state) => state.removeGoal);
   const goal = goalItems.find((item) => item.id === id);
   const [titleText, setTitleText] = useState(goal.title);
   const [descriptionText, setDescriptionText] = useState(goal.description);

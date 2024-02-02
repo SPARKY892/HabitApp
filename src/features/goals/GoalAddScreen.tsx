@@ -1,14 +1,14 @@
 import { View, Text, Button } from "react-native";
-import React, { useContext, useState } from "react";
-import GoalContext from "@context/goals/GoalContext";
+import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import uuid from "react-native-uuid";
 import styled from "styled-components/native";
 import { Theme } from "@library/styles";
+import useGoalStore from "@context/goals/GoalState";
 
 const GoalAddScreen = ({ navigation }) => {
-  const { addGoal } = useContext(GoalContext);
+  const addGoal = useGoalStore((state) => state.addGoal);
   const [titleText, setTitleText] = useState(null);
   const [descriptionText, setDescriptionText] = useState();
   const [pickedFrequency, setPickedFrequency] = useState("Daily");
@@ -86,7 +86,6 @@ const GoalAddScreen = ({ navigation }) => {
 
     console.log(combinedData);
 
-    // Assuming your context provides a method like setFormData
     addGoal(combinedData);
   };
 

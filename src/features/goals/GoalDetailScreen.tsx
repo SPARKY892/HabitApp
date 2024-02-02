@@ -1,13 +1,14 @@
-import { Pressable, Text, View } from "react-native";
-import React, { useState, useEffect, useContext } from "react";
-import GoalContext from "@context/goals/GoalContext";
+import { Pressable, View } from "react-native";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components/native";
 import { Theme } from "@library/styles";
 import { Calendar } from "react-native-calendars";
 import { Feather } from "@expo/vector-icons";
+import useGoalStore from "@context/goals/GoalState";
 
 const GoalDetailScreen = ({ navigation, route }) => {
-  const { goalItems, toggleCompletion } = useContext(GoalContext);
+  const goalItems = useGoalStore((state) => state.goalItems);
+  const toggleCompletion = useGoalStore((state) => state.toggleCompletion);
   const { id } = route.params;
   const [goal, setGoal] = useState({});
   const today = new Date().toJSON().slice(0, 10);
@@ -33,8 +34,6 @@ const GoalDetailScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     setGoal(goalItems.find((item) => item.id === id));
-    console.log("settinggoal");
-    console.log(goal);
   }, [goalItems]);
 
   const getCompletionsForThisWeek = () => {

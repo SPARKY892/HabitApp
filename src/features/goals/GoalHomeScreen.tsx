@@ -1,12 +1,11 @@
 import { View } from "react-native";
-import React, { useContext } from "react";
-import GoalContext from "@context/goals/GoalContext";
+import React from "react";
 import styled from "styled-components/native";
-import { Theme } from "@library/styles";
+import useGoalStore from "@context/goals/GoalState";
 import GoalInfoBox from "./GoalInfoBox";
 
 const GoalHomeScreen = ({ navigation }) => {
-  const { goalItems } = useContext(GoalContext);
+  const goalItems = useGoalStore((state) => state.goalItems);
 
   return (
     <View>
@@ -30,10 +29,6 @@ const GoalHomeScreen = ({ navigation }) => {
     </View>
   );
 };
-
-const ScreenTitle = styled.Text`
-  color: ${Theme.headerTextColour};
-`;
 
 export default GoalHomeScreen;
 
