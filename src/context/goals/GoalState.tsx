@@ -1,91 +1,99 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { useAsyncStorage } from "@react-native-async-storage/async-storage";
-import GoalContext from "./GoalContext";
-import GoalReducer from "./GoalReducer";
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import calcPeriods from "./calcPeriods";
 
-const GoalState = ({ children }) => {
-  const [init, setInit] = useState([]);
-  const { setItem, getItem } = useAsyncStorage("@goal_key");
-
-  // Change the code above to that below to get the initial state from local storage
-  const initialState = {
+const useGoalStore = create(
+  /* persist( */
+  (set) => ({
     goalItems: [],
-  };
+    addGoal: (payload) =>
+      set((state) => ({ goalItems: [...state.goalItems, payload] })),
+    editGoal: (payload) =>
+      set((state) => {
+        const updatedGoals = state.goalItems.map((goal) => {
+          if (goal.id === payload.id) {
+            return {
+              ...goal,
+              ...payload,
+            };
+          }
+          return goal;
+        });
+        return { goalItems: [...updatedGoals] };
+      }),
+    removeGoal: (payload) =>
+      set((state) => ({
+        goalItems: [...state.goalItems.filter((item) => item.id !== payload)],
+      })),
+    // TODO: clearGoals: () => set({ goalItems: [] }),
+    toggleCompletion: (id, date) =>
+      set((state) => {
+        const goal = state.goalItems.find((item) => item.id === id);
+        console.log("toggle firing");
+        console.log(date);
 
-  // Set up the reducer
-  const [state, dispatch] = useReducer(GoalReducer, initialState);
+        if (goal) {
+          console.log("goal exists");
+          if (!goal.completions[date]) {
+            goal.completions[date] = {
+              selected: true,
+              color: "blue",
+            };
+            console.log(`completion added for goal ${goal.title} on ${date}`);
+          } else {
+            delete goal.completions[date];
+            console.log(`Completion removed for goal ${goal.title} on ${date}`);
+          }
+        }
+        const toggledGoals = [...state.goalItems];
+        const updatedGoals = calcPeriods(toggledGoals);
+        // console.log(updatedGoals[0].completions);
+        return { goalItems: [...updatedGoals] };
+      }),
+  })
+  /* {
+      name: "goalItems",
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  ) */
+);
 
-  // Function to handle when a goal is added
-  const addGoal = (payload) => {
-    dispatch({ type: "ADD_GOAL", payload });
-  };
+/*
+case TOGGLE_COMPLETION: {
+      const goal = state.goalItems.find(
+        (item) => item.id === action.payload.id
+      );
 
-  // Function to handle when a goal is edited
-  const editGoal = (payload) => {
-    dispatch({ type: "EDIT_GOAL", payload });
-  };
+      if (goal) {
+        if (!goal.completions[action.payload.date]) {
+          goal.completions[action.payload.date] = {
+            selected: true,
+            color: "blue",
+          };
+          console.log(
+            `completion added for goal ${goal.title} on ${action.payload.date}`
+          );
+        } else {
+          delete goal.completions[action.payload.date];
+          console.log(
+            `Completion removed for goal ${goal.title} on ${action.payload.date}`
+          );
+        }
+      }
+      const toggledGoals = [...state.goalItems];
+      const updatedGoals = calcPeriods(toggledGoals);
+      // console.log(updatedGoals[0].completions);
+      return { ...state, goalItems: [...updatedGoals] };
+    }
+    */
 
-  // Function to remove a goal
-  const removeGoal = (payload) => {
-    dispatch({ type: "REMOVE_GOAL", payload });
-  };
+export default useGoalStore;
 
-  // Function to clear the goals
-  const clearGoals = () => {
-    dispatch({ type: "CLEAR" });
-  };
-
+/*
   // Function to add/remove a date from completions
   const toggleCompletion = (id, date) => {
     dispatch({ type: "TOGGLE_COMPLETION", payload: { id, date } });
   };
-
-  // Function to hydrate state with data from async storage
-  const hydrate = (payload) => {
-    dispatch({ type: "HYDRATE", payload });
-  };
-
-  useEffect(() => {
-    getItem().then((item) => {
-      if (item) {
-        hydrate(JSON.parse(item));
-        setInit(JSON.parse(item));
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    const writeItemToStorage = async (items) => {
-      if (items && items !== init) {
-        const valueJSON = JSON.stringify(items.length > 0 ? items : []);
-        await setItem(valueJSON);
-        setInit(items);
-        console.log("write to storage");
-        // console.log(items);
-      }
-    };
-
-    writeItemToStorage(state.goalItems);
-  }, [state.goalItems]);
-
-  return (
-    // Add the above functions into the Context provider, and pass to the children
-    <GoalContext.Provider
-      value={{
-        goalItems: state.goalItems,
-        addGoal,
-        editGoal,
-        removeGoal,
-        clearGoals,
-        toggleCompletion,
-        hydrate,
-        // To access the total, we need to pass in the state
-        ...state,
-      }}
-    >
-      {children}
-    </GoalContext.Provider>
-  );
-};
-
-export default GoalState;
+*/
