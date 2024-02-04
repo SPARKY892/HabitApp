@@ -79,6 +79,8 @@ const GoalDetailScreen = ({ navigation, route }) => {
         minDate="1970-01-01"
         maxDate={today}
         markingType={"period"}
+        firstDay={1}
+        enableSwipeMonths
         markedDates={
           goal.completions ? JSON.parse(JSON.stringify(goal.completions)) : null
         }
