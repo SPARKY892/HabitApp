@@ -30,22 +30,15 @@ const useGoalStore = create(
       toggleCompletion: (id, date) =>
         set((state) => {
           const goal = state.goalItems.find((item) => item.id === id);
-          console.log("toggle firing");
-          console.log(date);
 
           if (goal) {
-            console.log("goal exists");
             if (!goal.completions[date]) {
               goal.completions[date] = {
                 selected: true,
                 color: "blue",
               };
-              console.log(`completion added for goal ${goal.title} on ${date}`);
             } else {
               delete goal.completions[date];
-              console.log(
-                `Completion removed for goal ${goal.title} on ${date}`
-              );
             }
           }
           const toggledGoals = [...state.goalItems];
