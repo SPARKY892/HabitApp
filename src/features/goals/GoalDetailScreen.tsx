@@ -64,6 +64,96 @@ const GoalDetailScreen = ({ navigation, route }) => {
     return completionsThisWeek.length;
   };
 
+  // Function to count completions in last 30 days
+  const countLast30Days = () => {
+    if (goal) {
+      // Completions does not exist on render unitl useeffect kicks in
+      if (goal.completions === undefined) {
+        return 0;
+      }
+
+      const completionDates = Object.keys(goal.completions).sort();
+      const currentDate = new Date();
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+      let count = 0;
+
+      for (let i = completionDates.length - 1; i >= 0; i -= 1) {
+        const completionDate = new Date(completionDates[i]);
+
+        if (
+          completionDate >= thirtyDaysAgo &&
+          completionDate <= currentDate &&
+          goal.completions[completionDate.toISOString().split("T")[0]]?.selected
+        ) {
+          count += 1;
+        } else if (completionDate < thirtyDaysAgo) {
+          // No need to continue checking older dates
+          break;
+        }
+      }
+      return count;
+    }
+    return 0;
+  };
+
+  // Function to get current streak
+  const getCurrentStreak = () => {
+    if (goal) {
+      // Completions does not exist on render unitl useeffect kicks in
+      if (goal.completions === undefined) {
+        return 0;
+      }
+
+      const completionDates = Object.keys(goal.completions).sort();
+      let currentStreak = 0;
+      let currentDate = new Date(completionDates[completionDates.length - 1]);
+
+      while (
+        goal.completions[currentDate.toISOString().split("T")[0]]?.selected
+      ) {
+        currentStreak += 1;
+        currentDate.setDate(currentDate.getDate() - 1);
+      }
+      return currentStreak;
+    }
+    return 0;
+  };
+
+  // Function to find longest streak
+  const findLongestStreak = () => {
+    if (goal) {
+      // Completions does not exist on render unitl useeffect kicks in
+      if (goal.completions === undefined) {
+        return 0;
+      }
+      const dates = Object.keys(goal.completions).sort();
+      let currentStreak = 0;
+      let longestStreak = 0;
+
+      for (let i = 0; i < dates.length - 1; i += 1) {
+        const currentDate = new Date(dates[i]);
+        const nextDate = new Date(dates[i + 1]);
+
+        const isConsecutive =
+          (nextDate - currentDate) / (1000 * 60 * 60 * 24) === 1;
+
+        if (isConsecutive) {
+          currentStreak += 1;
+        } else {
+          currentStreak = 0;
+        }
+
+        if (currentStreak > longestStreak) {
+          longestStreak = currentStreak;
+        }
+      }
+      return longestStreak + 1;
+    }
+    return 0;
+  };
+
   const getAllCompletions = () => {
     if (goal.completions) return Object.keys(goal.completions).length;
 
@@ -78,7 +168,7 @@ const GoalDetailScreen = ({ navigation, route }) => {
         }}
         minDate="1970-01-01"
         maxDate={today}
-        markingType={"period"}
+        markingType="period"
         firstDay={1}
         enableSwipeMonths
         markedDates={
@@ -95,7 +185,7 @@ const GoalDetailScreen = ({ navigation, route }) => {
         </StatBox>
         <StatBox>
           <StatText>Last 30 Days</StatText>
-          <StatNumbers>{`${getCompletionsForThisWeek()} / 30`}</StatNumbers>
+          <StatNumbers>{`${countLast30Days()} / 30`}</StatNumbers>
         </StatBox>
         <StatBox>
           <StatText>All Time</StatText>
@@ -108,14 +198,14 @@ const GoalDetailScreen = ({ navigation, route }) => {
           <StyledFeather name="trending-up" size={20} />
           <View>
             <StatText>Current Streak</StatText>
-            <StatNumbers>10</StatNumbers>
+            <StatNumbers>{getCurrentStreak()}</StatNumbers>
           </View>
         </StreakBox>
         <StreakBox>
           <StyledFeather name="award" size={20} />
           <View>
             <StatText>Longest Streak</StatText>
-            <StatNumbers>10</StatNumbers>
+            <StatNumbers>{findLongestStreak()}</StatNumbers>
           </View>
         </StreakBox>
       </StatContainer>
