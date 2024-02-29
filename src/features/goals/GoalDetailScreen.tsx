@@ -1,10 +1,11 @@
-import { Pressable, View } from "react-native";
+import { Pressable, View, ScrollView } from "react-native";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components/native";
 import { Theme } from "@library/styles";
 import { Calendar } from "react-native-calendars";
 import { Feather } from "@expo/vector-icons";
 import useGoalStore from "@context/goals/GoalState";
+import GoalTargetInfo from "./GoalTargetInfo";
 
 const GoalDetailScreen = ({ navigation, route }) => {
   const goalItems = useGoalStore((state) => state.goalItems);
@@ -41,7 +42,10 @@ const GoalDetailScreen = ({ navigation, route }) => {
     const firstDayOfWeek = new Date(day);
     const lastDayOfWeek = new Date(day);
 
-    if (goal.completions === undefined) {
+    if (
+      goal.completions === undefined ||
+      Object.keys(goal.completions).length === 0
+    ) {
       return 0;
     }
 
@@ -68,7 +72,10 @@ const GoalDetailScreen = ({ navigation, route }) => {
   const countLast30Days = () => {
     if (goal) {
       // Completions does not exist on render unitl useeffect kicks in
-      if (goal.completions === undefined) {
+      if (
+        goal.completions === undefined ||
+        Object.keys(goal.completions).length === 0
+      ) {
         return 0;
       }
 
@@ -102,7 +109,10 @@ const GoalDetailScreen = ({ navigation, route }) => {
   const getCurrentStreak = () => {
     if (goal) {
       // Completions does not exist on render unitl useeffect kicks in
-      if (goal.completions === undefined) {
+      if (
+        goal.completions === undefined ||
+        Object.keys(goal.completions).length === 0
+      ) {
         return 0;
       }
 
@@ -125,7 +135,10 @@ const GoalDetailScreen = ({ navigation, route }) => {
   const findLongestStreak = () => {
     if (goal) {
       // Completions does not exist on render unitl useeffect kicks in
-      if (goal.completions === undefined) {
+      if (
+        goal.completions === undefined ||
+        Object.keys(goal.completions).length === 0
+      ) {
         return 0;
       }
       const dates = Object.keys(goal.completions).sort();
@@ -161,7 +174,13 @@ const GoalDetailScreen = ({ navigation, route }) => {
   };
 
   return (
-    <View>
+    <ScrollView>
+      <GoalDescription>{goal.description}</GoalDescription>
+      <GoalTargetInfo
+        checkedDays={goal.checkedDays}
+        pickedNumber={goal.pickedNumber}
+        pickedFrequency={goal.pickedFrequency}
+      />
       <Calendar
         onDayPress={(day) => {
           handleDayPress(day.dateString);
@@ -209,9 +228,18 @@ const GoalDetailScreen = ({ navigation, route }) => {
           </View>
         </StreakBox>
       </StatContainer>
-    </View>
+    </ScrollView>
   );
 };
+
+const GoalDescription = styled.Text`
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+`;
 
 const SectionTitle = styled.Text`
   padding: 5px 10px;
