@@ -33,6 +33,13 @@ const GoalInfoBox = ({ goal }) => {
     return completionsThisWeek.length;
   };
 
+  const getDescription = () => {
+    if (description.length > 30) {
+      return `${description.substr(0, 30)}...`;
+    }
+    return description;
+  };
+
   return (
     <Container>
       <LeftSection>
@@ -51,7 +58,7 @@ const GoalInfoBox = ({ goal }) => {
         </IconWrapper>
         <View>
           <Title>{title}</Title>
-          <Description>{description}</Description>
+          <Description>{getDescription()}</Description>
           <CompletionInfo>{`${targetDays} days per week (${getCompletionsForThisWeek()}/${targetDays})`}</CompletionInfo>
         </View>
       </LeftSection>
