@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -7,11 +7,13 @@ import { useCurrentTheme } from "@context/index";
 import { StatusBar } from "expo-status-bar";
 import { Feather } from "@expo/vector-icons";
 import { Colours } from "@library/styles";
-import { Platform, Pressable } from "react-native";
+import { ActivityIndicator, Platform, Pressable } from "react-native";
 import GoalAddScreen from "@features/goals/GoalAddScreen";
 import GoalEditScreen from "@features/goals/GoalEditScreen";
 import TaskAddScreen from "@features/tasks/TaskAddScreen";
 import TaskEditScreen from "@features/tasks/TaskEditScreen";
+import OnboardingScreen from "@features/onboarding/OnboardingScreen";
+import useOnboardingStore from "@context/onboarding/onboardingState";
 import SettingsScreen from "../features/settings/SettingsScreen";
 import TaskHomeScreen from "../features/tasks/TaskHomeScreen";
 import GoalHomeScreen from "../features/goals/GoalHomeScreen";
@@ -106,55 +108,90 @@ const GoalNavigator = () => {
   );
 };
 
+const OnboardingNavigator = () => {
+  const Stack = createNativeStackNavigator();
+
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
+    </Stack.Navigator>
+  );
+};
+
 const AppNavigator = () => {
   const { reactNavigationTheme } = useCurrentTheme();
+  const isFirstLaunch = useOnboardingStore((state) => state.isFirstLaunch);
+  // const setIsFirstLaunch = useOnboardingStore(
+  //   (state) => state.setIsFirstLaunch
+  // );
+
+  console.log(isFirstLaunch);
+
+  if (isFirstLaunch === null) {
+    return (
+      // Render a loading indicator until isFirstLaunch is determined
+      <ActivityIndicator size="large" color="#4e94fd" />
+    );
+  }
+
+  // if (isFirstLaunch === false) {
+  //   setIsFirstLaunch(true);
+  // }
 
   return (
     <NavigationContainer theme={reactNavigationTheme}>
       <StatusBar animated style="auto" />
-      <Tab.Navigator
-        screenOptions={{
-          tabBarActiveTintColor: Colours.secondary,
-          tabBarLabelStyle: {
-            fontWeight: "bold",
-            fontSize: 12,
-          },
-          tabBarStyle: {
-            borderTopWidth: 0,
-            ...(Platform.OS === "android" && { height: 60 }),
-          },
-        }}
-      >
-        <Tab.Screen
-          name="Tasks"
-          component={TaskNavigator}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Feather name="list" color={color} size={size} />
-            ),
-            headerShown: false,
+      {isFirstLaunch ? (
+        <OnboardingNavigator />
+      ) : (
+        <Tab.Navigator
+          screenOptions={{
+            tabBarActiveTintColor: Colours.secondary,
+            tabBarLabelStyle: {
+              fontWeight: "bold",
+              fontSize: 12,
+            },
+            tabBarStyle: {
+              borderTopWidth: 0,
+              ...(Platform.OS === "android" && { height: 60 }),
+            },
           }}
-        />
-        <Tab.Screen
-          name="Goals"
-          component={GoalNavigator}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Feather name="target" color={color} size={size} />
-            ),
-            headerShown: false,
-          }}
-        />
-        <Tab.Screen
-          name="Settings"
-          component={SettingsScreen}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Feather name="settings" color={color} size={size} />
-            ),
-          }}
-        />
-      </Tab.Navigator>
+        >
+          <Tab.Screen
+            name="Tasks"
+            component={TaskNavigator}
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Feather name="list" color={color} size={size} />
+              ),
+              headerShown: false,
+            }}
+          />
+          <Tab.Screen
+            name="Goals"
+            component={GoalNavigator}
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Feather name="target" color={color} size={size} />
+              ),
+              headerShown: false,
+            }}
+          />
+          <Tab.Screen
+            name="Settings"
+            component={SettingsScreen}
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Feather name="settings" color={color} size={size} />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      )}
     </NavigationContainer>
   );
 };
