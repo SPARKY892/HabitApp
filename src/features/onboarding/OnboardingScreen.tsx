@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { ScrollView, View, Dimensions, Pressable } from "react-native";
+import { ScrollView, Dimensions, Pressable } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import styled from "styled-components/native";
 import useOnboardingStore from "@context/onboarding/onboardingState";
@@ -92,7 +92,6 @@ const DotContainer = styled.View`
   flex-direction: row;
   position: absolute;
   left: 50%;
-  border: 1px solid red;
 `;
 
 const ButtonContainer = styled.View`
