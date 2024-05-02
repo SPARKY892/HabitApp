@@ -23,6 +23,7 @@ const TaskHomeScreen = ({ navigation }) => {
                   pageTitle: item.title,
                 });
               }}
+              style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
             >
               <TaskInfoBox item={item} />
             </PressableTask>

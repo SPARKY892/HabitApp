@@ -33,7 +33,10 @@ const TaskNavigator = () => {
           return {
             title: "Tasks",
             headerRight: () => (
-              <Pressable onPress={() => navigation.navigate("TaskAddScreen")}>
+              <Pressable
+                onPress={() => navigation.navigate("TaskAddScreen")}
+                style={({ pressed }) => [{ opacity: pressed ? 0.4 : 1 }]}
+              >
                 <Feather name="plus-circle" size={24} />
               </Pressable>
             ),
@@ -70,7 +73,10 @@ const GoalNavigator = () => {
           return {
             title: "Goals",
             headerRight: () => (
-              <Pressable onPress={() => navigation.navigate("GoalAddScreen")}>
+              <Pressable
+                onPress={() => navigation.navigate("GoalAddScreen")}
+                style={({ pressed }) => [{ opacity: pressed ? 0.4 : 1 }]}
+              >
                 <Feather name="plus-circle" size={24} />
               </Pressable>
             ),

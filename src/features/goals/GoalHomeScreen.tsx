@@ -20,6 +20,7 @@ const GoalHomeScreen = ({ navigation }) => {
                   id: item.id,
                 });
               }}
+              style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
             >
               <GoalInfoBox goal={item} />
             </PressableGoal>
