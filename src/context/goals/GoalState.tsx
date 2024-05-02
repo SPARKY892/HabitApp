@@ -26,7 +26,7 @@ const useGoalStore = create(
         set((state) => ({
           goalItems: [...state.goalItems.filter((item) => item.id !== payload)],
         })),
-      // TODO: clearGoals: () => set({ goalItems: [] }),
+      clearGoals: () => set({ goalItems: [] }),
       toggleCompletion: (id, date) =>
         set((state) => {
           const goal = state.goalItems.find((item) => item.id === id);

@@ -25,7 +25,7 @@ const useTaskStore = create(
         set((state) => ({
           taskItems: [...state.taskItems.filter((item) => item.id !== payload)],
         })),
-      // TODO: clearTasks: () => set({ taskItems: [] }),
+      clearTasks: () => set({ taskItems: [] }),
       toggleCompletion: (payload) =>
         set((state) => {
           const updatedTasks = state.taskItems.map((task) => {
