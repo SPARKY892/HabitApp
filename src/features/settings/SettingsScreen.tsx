@@ -5,7 +5,6 @@ import useOnboardingStore from "@context/onboarding/onboardingState";
 import useGoalStore from "@context/goals/GoalState";
 import useTaskStore from "@context/tasks/TaskState";
 import SettingsButton from "./SettingsButton";
-import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 
 const SettingsScreen = () => {
   const [taskModalVisible, setTaskModalVisible] = useState(false);
