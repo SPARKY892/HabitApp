@@ -14,6 +14,7 @@ import TaskAddScreen from "@features/tasks/TaskAddScreen";
 import TaskEditScreen from "@features/tasks/TaskEditScreen";
 import OnboardingScreen from "@features/onboarding/OnboardingScreen";
 import useOnboardingStore from "@context/onboarding/onboardingState";
+import useLocalNotification from "@library/utils/hooks/useLocalNotification";
 import SettingsScreen from "../features/settings/SettingsScreen";
 import TaskHomeScreen from "../features/tasks/TaskHomeScreen";
 import GoalHomeScreen from "../features/goals/GoalHomeScreen";
@@ -131,11 +132,8 @@ const OnboardingNavigator = () => {
 const AppNavigator = () => {
   const { reactNavigationTheme } = useCurrentTheme();
   const isFirstLaunch = useOnboardingStore((state) => state.isFirstLaunch);
-  // const setIsFirstLaunch = useOnboardingStore(
-  //   (state) => state.setIsFirstLaunch
-  // );
 
-  console.log(isFirstLaunch);
+  useLocalNotification();
 
   if (isFirstLaunch === null) {
     return (

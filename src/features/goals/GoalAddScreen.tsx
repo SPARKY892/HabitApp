@@ -2,6 +2,7 @@ import { View, Text, Button } from "react-native";
 import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import LocalNotification from "./NotificationSchedule";
 import uuid from "react-native-uuid";
 import styled from "styled-components/native";
 import { Theme } from "@library/styles";
@@ -155,6 +156,7 @@ const GoalAddScreen = ({ navigation }) => {
         <Picker.Item label="Weekly" value="Weekly" />
       </Picker>
       {frequencyDisplay(pickedFrequency)}
+      <LocalNotification />
       <Button
         title="Save"
         disabled={titleText === "" || titleText === null}
