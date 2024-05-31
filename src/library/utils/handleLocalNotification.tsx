@@ -6,11 +6,11 @@ import { Platform } from "react-native";
 
 export const schedulePushNotification = async () => {
   await Notifications.scheduleNotificationAsync({
-    identifier: "review",
     content: {
       title: "Your opinion is important to us!",
       subtitle: "It's been a while since you used the app.",
       body: "Please take a moment to leave a review.",
+      categoryIdentifier: "testAction",
     },
     trigger: {
       seconds: 10,
@@ -21,7 +21,22 @@ export const schedulePushNotification = async () => {
 export const registerForPushNotificationsAsync = async () => {
   let token = "";
 
+  const complete = {
+    buttonTitle: "Complete",
+    identifier: "complete",
+  };
+
+  const dismiss = {
+    buttonTitle: "Dismiss",
+    identifier: "dismiss",
+  };
+
   if (Platform.OS === "android") {
+    await Notifications.setNotificationCategoryAsync("testAction", [
+      complete,
+      dismiss,
+    ]);
+
     await Notifications.setNotificationChannelAsync("default", {
       name: "default",
       importance: Notifications.AndroidImportance.MAX,
